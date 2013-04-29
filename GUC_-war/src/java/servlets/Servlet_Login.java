@@ -7,7 +7,7 @@ package servlets;
 import app.dao.UsuarioFacadeLocal;
 import app.entity.Usuario;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -18,18 +18,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
 /**
  *
- * @author 
+ * @author Naoual Amasri
  */
-@WebServlet(name="GestionUsuariosServlet", urlPatterns={"/GestionUsuariosServlet"})
-public class GestionUsuariosServlet extends HttpServlet {
+@WebServlet(name = "Servlet_Login", urlPatterns = {"/Servlet_Login"})
+public class Servlet_Login extends HttpServlet {
+
     
-
-    @EJB
-    private UsuarioFacadeLocal usuarioFacade;
-
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -40,45 +36,40 @@ public class GestionUsuariosServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
+    @EJB
+    private UsuarioFacadeLocal usuarioFacade;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        HttpSession session = request.getSession();
-	
-	if(("datos".equalsIgnoreCase((String)request.getParameter("datos")))){
-            System.out.println("AKI");
-            String criterio = (String)request.getAttribute("criterio");
-            String campo = (String)request.getAttribute("campo");
-
-            List<Usuario> lista = new ArrayList<Usuario>();
-
-            if(criterio.equalsIgnoreCase("nif")){
-                lista = usuarioFacade.findByNif(campo);
-            }else if(criterio.equalsIgnoreCase("nombre")){
-                lista = usuarioFacade.findByName(campo);
-            }else if(criterio.equalsIgnoreCase("apellidos")){
-                lista = usuarioFacade.findByLastName(campo);
-            }else if(criterio.equalsIgnoreCase("rol")){
-                lista = usuarioFacade.findByRol(campo);
+        HttpSession sesion = request.getSession();
+            List<Usuario> listaUsuarios;
+            String rutaRequest = null;
+            if ("LOG IN".equals(request.getParameter("LOG IN"))) {
+                //Recojemos datos de entrada en login
+                String dni = request.getParameter("dni");
+                String contrasenya = request.getParameter("contrasenya");
+                //Busqueda en la base de datos
+                listaUsuarios = usuarioFacade.findByNif(dni);
+                if (listaUsuarios.isEmpty()) {//Si el usuario no existe
+                    rutaRequest = "/AgregarAyuntamiento.jsp";
+                } else {//Si no esta vacia solo habra uno por eso usamos el 0
+                    if (listaUsuarios.get(0).getPassword().equals(contrasenya)) {
+                        String rol = listaUsuarios.get(0).getRol();
+                        //request.setAttribute("usuario",sesion.getAttribute("nombreUsuario"));
+                        if (rol.equals("administrador")) {
+                            rutaRequest = "/GestionUsuariosServlet";
+                            //sesion.setAttribute("id_admin", listaUsuarios.get(0).getNif());
+                            //sesion.setAttribute("nombreUsuario", listaUsuarios.get(0));
+                            //request.setAttribute("usuario",listaUsuarios.get(0));
+                        }
+                    } else {
+                        rutaRequest = "/GestionUsuariosServlet";
+                        }
+                }
             }
-
-            request.setAttribute("usuarios", lista);
-
-            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/GestionUsuarios.jsp");
-            dispatcher.forward(request, response);
-        }else{
-            System.out.println("AKIIIII");
-            List<Usuario> listaUsuarios = usuarioFacade.findAll();
-            request.setAttribute("usuarios", listaUsuarios);
-       
-        
-            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/AdminPrincipal.jsp");
-            dispatcher.forward(request, response);
-        }
-        
-        
+        RequestDispatcher rd;
+        rd = getServletContext().getRequestDispatcher(rutaRequest);
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -121,6 +112,4 @@ public class GestionUsuariosServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-
 }

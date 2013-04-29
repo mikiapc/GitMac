@@ -55,14 +55,14 @@
         <div>
             <label for="buscar" > <font color="#2069b4"><B> BUSCAR USUARIO </B></font> </label>
             <br><br>
-            <fieldset>
+            <from method="get" action="BuscarUsuario" name="datos">
                 <label> Criterio de b&uacute;squeda </label>
-                <select name="busqueda" class="round"> <option>DNI</option> 
+                <select name="criterio" class="round"> <option>NIF</option> 
                 <option>Nombre</option> <option>Apellidos</option> <option>Rol</option>
-            </select>
-            <input name="campo" type="text" class="round" >
-            <button>Buscar</button>
-            </fieldset>
+                </select>
+                <input name="campo" type="text" class="round" >
+                <input type="submit">
+            </form>
             
             <br><br>
       </div>
@@ -84,8 +84,23 @@
 		</tr>
                 
                 <% Collection lista = (Collection)request.getAttribute("usuarios");
-                    for (Iterator iter = lista.iterator(); iter.hasNext();) {
-	  		Usuario user = (Usuario) iter.next();
+                    if(lista.isEmpty()){
+                 %>
+                 <tr>
+                        <td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                 </tr>
+                        
+                 <%
+                    }else{
+                        for (Iterator iter = lista.iterator(); iter.hasNext();) {
+                            Usuario user = (Usuario) iter.next();
                 %>
                     <tr>
                         <td><%=user.getNif() %> </td>
@@ -97,7 +112,8 @@
                         <td> <a href="EditarUsuarioJsp.jsp">Editar</a> </td>
                         <td> <a href="EditarUsuarioJsp.jsp">Eliminar</a> </td>
 		</tr>
-                <% } %>
+                <%      }
+                    }%>
 	
   		</tbody>
   	</table>

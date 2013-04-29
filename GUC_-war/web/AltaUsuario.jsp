@@ -68,7 +68,7 @@ and open the template in the editor.
             <label for="rol">rol</label>
             <select name="rol">
                 <option> Administrador </option>
-                <option> Controlador </option>
+                <option> Controlador diputaci&oacute;n</option>
                 <option> Controlador ayuntamiento </option>
                 <option> Jefe de servicio </option>
                 <option> Usuario </option>

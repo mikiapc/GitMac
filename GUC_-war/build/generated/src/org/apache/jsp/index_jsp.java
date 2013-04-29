@@ -42,7 +42,7 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
 
 
-	response.sendRedirect("GestionUsuariosServlet.java");
+	response.sendRedirect("login.jsp");
 
       out.write('\n');
     } catch (Throwable t) {

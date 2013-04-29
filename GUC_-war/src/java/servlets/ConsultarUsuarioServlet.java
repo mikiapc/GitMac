@@ -4,31 +4,20 @@
  */
 package servlets;
 
-import app.dao.UsuarioFacadeLocal;
-import app.entity.Usuario;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import javax.ejb.EJB;
-import javax.servlet.RequestDispatcher;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 
 /**
  *
- * @author 
+ * @author Naoual Amasri
  */
-@WebServlet(name="GestionUsuariosServlet", urlPatterns={"/GestionUsuariosServlet"})
-public class GestionUsuariosServlet extends HttpServlet {
-    
-
-    @EJB
-    private UsuarioFacadeLocal usuarioFacade;
+@WebServlet(name = "ConsultarUsuarioServlet", urlPatterns = {"/ConsultarUsuarioServlet"})
+public class ConsultarUsuarioServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -40,43 +29,9 @@ public class GestionUsuariosServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        HttpSession session = request.getSession();
-	
-	if(("datos".equalsIgnoreCase((String)request.getParameter("datos")))){
-            System.out.println("AKI");
-            String criterio = (String)request.getAttribute("criterio");
-            String campo = (String)request.getAttribute("campo");
-
-            List<Usuario> lista = new ArrayList<Usuario>();
-
-            if(criterio.equalsIgnoreCase("nif")){
-                lista = usuarioFacade.findByNif(campo);
-            }else if(criterio.equalsIgnoreCase("nombre")){
-                lista = usuarioFacade.findByName(campo);
-            }else if(criterio.equalsIgnoreCase("apellidos")){
-                lista = usuarioFacade.findByLastName(campo);
-            }else if(criterio.equalsIgnoreCase("rol")){
-                lista = usuarioFacade.findByRol(campo);
-            }
-
-            request.setAttribute("usuarios", lista);
-
-            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/GestionUsuarios.jsp");
-            dispatcher.forward(request, response);
-        }else{
-            System.out.println("AKIIIII");
-            List<Usuario> listaUsuarios = usuarioFacade.findAll();
-            request.setAttribute("usuarios", listaUsuarios);
-       
-        
-            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/AdminPrincipal.jsp");
-            dispatcher.forward(request, response);
-        }
         
         
     }
@@ -121,6 +76,4 @@ public class GestionUsuariosServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-
 }

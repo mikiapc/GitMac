@@ -24,6 +24,14 @@ public interface UsuarioFacadeLocal {
     Usuario find(Object id);
 
     List<Usuario> findAll();
+    
+    List<Usuario> findByName(String nombre);
+    
+    List<Usuario> findByLastName(String apellidos);
+    
+    List<Usuario> findByNif(String nif);
+    
+    List<Usuario> findByRol(String rol);
 
     List<Usuario> findRange(int[] range);
 
