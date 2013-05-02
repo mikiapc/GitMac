@@ -1,30 +1,30 @@
 <%-- 
-    Document   : EditarPerfil
-    Created on : 27-abr-2013, 20:09:15
-    Author     : Juan R
+    Document   : AltaTerminal
+    Created on : 28-abr-2013, 13:23:59
+    Author     : Miki
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+
     <head>
-        <title> Editar Perfil De Gasto </title>
+        <title> Alta terminal telef&oacute;nico </title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta charset="utf-8">
+       <meta charset="utf-8">
+	
 	
 	<!-- Stylesheets -->
 	<link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet'>
 	<link rel="stylesheet" href="css/style.css">
 
-	<!-- Optimize for mobile devices -->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>  
     </head>
+
     <body>
-        <!-- TOP BAR -->
-	<div id="top-bar">
+<div id="top-bar">
 		
 		<div class="page-full-width strong em">
-                    <a href="#" id="company-branding" class="fl"><img src="images/logo_DIPUTACION.jpg" alt="Blue Hosting" /></a>
+                    <a href="#" id="company-branding" class="fl"><img src="images/logo_DIPUTACION.jpg"/></a>
                     <div id="cabz">
                     <h1>Diputación provincial de Málaga
                         <br>Área de modernización local
@@ -38,17 +38,30 @@
 	
 	</div> <!-- end top-bar -->
         <br><br>
-        <form method="get" action="AltaPerfil" name="datos">
-            Perfil <br>
-            <input name="idperfil" type="text">
+        
+        <form method="get" action="AltaTerminal" name="datos">
+            
+            
+            <label for="marca">MARCA: </label>
+            <input name="marca" type="text">
+            <br><br> 
+            
+            <label for="modelo">MODELO: </label>
+            <input name="modelo" type="text">
             <br><br>
             
-            Gasto <br>
-            <input name="gasto" type="text">
+            <select name="tipo">
+                <option value="f" selected>Fijo</option>
+                <option value="m">M&oacute;vil</option>
+            </select>
             <br><br>
-           
             
-        <button>Enviar</button></form>
+            
+            <label for="ubicación">Ubicaci&oacute;n: </label>
+            <input name="ubicacion" type="text">
+            <br><br>
+
+           <input type="submit" value="Crear">
+
     </body>
 </html>
-

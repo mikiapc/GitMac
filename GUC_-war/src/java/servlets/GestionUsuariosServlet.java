@@ -45,15 +45,16 @@ public class GestionUsuariosServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        HttpSession session = request.getSession();
-        String action = (String)request.getParameter("action");
+       // HttpSession session = request.getSession();
+       // String action = (String)request.getParameter("action");
 	
     
         List<Usuario> listaUsuarios = usuarioFacade.findAll();
+        System.out.println(listaUsuarios.toString());
         request.setAttribute("usuarios", listaUsuarios);
        
         
-        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/AdminPrincipal.jsp");
+        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/GestionUsuarios.jsp");
         dispatcher.forward(request, response);
             
         

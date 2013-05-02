@@ -1,3 +1,3 @@
 <%
-	response.sendRedirect("GestionUsuarios.jsp");
+	response.sendRedirect("GestionUsuariosServlet");
 %>

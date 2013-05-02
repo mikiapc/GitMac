@@ -24,6 +24,8 @@ public interface TerminalFacadeLocal {
     Terminal find(Object id);
 
     List<Terminal> findAll();
+    
+    Terminal findById(String i);
 
     List<Terminal> findRange(int[] range);
 

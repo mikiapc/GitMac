@@ -4,21 +4,28 @@
  */
 package servlets;
 
+import app.dao.PerfilgastoFacadeLocal;
+import app.entity.Perfilgasto;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Juan R
+ * @author Juanito
  */
 @WebServlet(name = "AltaPerfilServlet", urlPatterns = {"/AltaPerfil"})
 public class AltaPerfilServlet extends HttpServlet {
+    
+    @EJB
+    private PerfilgastoFacadeLocal pergas;
 
     /**
      * Processes requests for both HTTP
@@ -32,18 +39,25 @@ public class AltaPerfilServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       String perfil = request.getParameter("idperfil");
-       String gasto = request.getParameter("gasto");
-       
-       request.setAttribute("idperfil", perfil);
-       request.setAttribute("gasto", gasto);
-       
-       RequestDispatcher rd;
-       rd = this.getServletContext().getRequestDispatcher("/GestionPerfiles.jsp");
-       
-       rd.forward(request, response);
-       
-       
+        response.setContentType("text/html;charset=UTF-8");
+        
+        HttpSession sesion = request.getSession();
+        
+        
+        String idperfil = request.getParameter("idperfil");
+        String gasto = request.getParameter("gasto");
+        
+        Perfilgasto pg = new Perfilgasto(Integer.parseInt(idperfil), gasto, false);
+        pergas.create(pg);
+        
+        request.setAttribute("idperfil", idperfil);
+        request.setAttribute("gasto", gasto);
+        
+        RequestDispatcher rd;
+        rd = this.getServletContext().getRequestDispatcher("/GestionPerfilServlet");
+        
+        rd.forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

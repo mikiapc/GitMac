@@ -27,4 +27,11 @@ public class TerminalFacade extends AbstractFacade<Terminal> implements Terminal
         super(Terminal.class);
     }
     
+    @Override
+    public Terminal findById(String id){
+        return (Terminal) em.createQuery("SELECT t FROM Terminal t WHERE t.idTerminal LIKE :custID")
+                .setParameter("custID", id)
+                .getSingleResult();
+    }
+    
 }

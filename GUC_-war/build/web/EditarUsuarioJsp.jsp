@@ -43,7 +43,7 @@
         <br><br>
         <% Usuario usuario = (Usuario)request.getAttribute("usuario");
         %>
-        <form method="get" action="/EditUsuarioServlet" name="edit">
+        <form method="get" action="EditUsuarioServlet" name="edit">
             <label for="nif">nif</label>
             <input name="nif" type="text" value="<%=usuario.getNif()%>">
             <br><br>

@@ -49,6 +49,7 @@ public class BuscarUsuarioServlet extends HttpServlet {
         
         if(criterio.equalsIgnoreCase("nif")){   
             lista = usuarioFacade.findByNif(campo);
+            System.out.println(lista);
         }else if(criterio.equalsIgnoreCase("nombre")){
             lista = usuarioFacade.findByName(campo);
         }else if(criterio.equalsIgnoreCase("apellidos")){
@@ -59,7 +60,7 @@ public class BuscarUsuarioServlet extends HttpServlet {
         
         request.setAttribute("usuarios", lista);
         
-        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/GestionUsuarios.jsp");
+        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/UsuariosEncontrados.jsp");
         dispatcher.forward(request, response);
     }
 

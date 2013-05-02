@@ -28,5 +28,9 @@ public interface PerfilgastoFacadeLocal {
     List<Perfilgasto> findRange(int[] range);
 
     int count();
+
+    List<Perfilgasto> findByNoDelete();
+    List<Perfilgasto> findByIdPerfilGasto(Integer idpg);
+    List<Perfilgasto> findByTipoSaldo(String saldo);
     
 }

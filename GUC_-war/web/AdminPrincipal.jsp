@@ -109,12 +109,14 @@
 	<table border="1">
   		<tbody>
   		<tr>
-                        <td>DNI</td>
+                        <td>NIF</td>
 			<td>Nombre</td>
 			<td>Apellidos</td>
                         <td>Rol</td>
                         <td>Correo electr&oacute;nico</td>
-                        <td>&nbsp;</td>
+                        <td>Direccion</td>
+                        <td>Publicable</td>
+                        <td>Ayuntamiento</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
 		</tr>
@@ -144,9 +146,21 @@
 			<td> <%= user.getApellidos() %> </td>
                         <td> <%= user.getRol() %> </td>
                         <td> <%= user.getCorreoE() %> </td>
-                        <td> <a href="ConsultarUsuario.jsp">Consultar</a> </td>
-                        <td> <a href="EditarUsuarioJsp.jsp">Editar</a> </td>
-                        <td> <a href="EditarUsuarioJsp.jsp">Eliminar</a> </td>
+                        <td> <%= user.getDireccion() %> </td>
+                        <%
+			if(user.getPublicable()) {
+                        %>
+                         <td><input type="checkbox" name="publicable" value="true" disabled checked></td>
+                        <%
+                        } else {
+                        %>
+                        <td><input type="checkbox" name="publicable" value="true" disabled></td>
+                        <%              
+                        }
+                        %>
+                        <td> <%= user.getAyuntamiento().getAyuntamientoPK().getLocalidad()%> </td>
+                        <td> <a href="OpcionesUsuarioServlet?do=edit&nif=<%=user.getNif() %>">Editar</a> </td>
+                        <td> <a href="OpcionesUsuarioServlet?do=delete&nif=<%=user.getNif()%>">Eliminar</a> </td>
 		</tr>
                 <%      }
                     }%>
