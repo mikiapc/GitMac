@@ -4,10 +4,12 @@
  */
 package servlets;
 
+import app.dao.AyuntamientoFacadeLocal;
 import app.dao.UsuarioFacadeLocal;
+import app.entity.Ayuntamiento;
 import app.entity.Usuario;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -16,20 +18,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 
 /**
  *
- * @author 
+ * @author Naoual Amasri
  */
-@WebServlet(name="GestionUsuariosServlet", urlPatterns={"/GestionUsuariosServlet"})
-public class GestionUsuariosServlet extends HttpServlet {
-    
-
+@WebServlet(name = "CargarAltaUsuarioServlet", urlPatterns = {"/CargarAltaUsuarioServlet"})
+public class CargarAltaUsuarioServlet extends HttpServlet {
+    @EJB
+    private AyuntamientoFacadeLocal ayuntamiento;
     @EJB
     private UsuarioFacadeLocal usuarioFacade;
-
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -40,24 +39,21 @@ public class GestionUsuariosServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        HttpSession session = request.getSession();
-        String action = (String)request.getParameter("action");
-	
-    
-        List<Usuario> listaUsuarios = usuarioFacade.findAll();
-        request.setAttribute("usuarios", listaUsuarios);
-       
+        List<Ayuntamiento> ayuntamientos = ayuntamiento.findAll();
         
-        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/AdminPrincipal.jsp");
-        dispatcher.forward(request, response);
-            
+        List<Usuario> jefes = usuarioFacade.findByRol("Jefe de servicio");
         
+        request.setAttribute("ayuntamientos", ayuntamientos);
+        request.setAttribute("jefes", jefes);
         
+        RequestDispatcher rd;
+        rd = this.getServletContext().getRequestDispatcher("/AltaUsuario.jsp");
+        
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -100,6 +96,4 @@ public class GestionUsuariosServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-
 }

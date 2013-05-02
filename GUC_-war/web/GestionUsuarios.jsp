@@ -7,11 +7,14 @@
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.Collection"%>
 
-
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-
+        <base href="<%=basePath%>">
 	
 	<!-- Stylesheets -->
 	<link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet'>
@@ -55,13 +58,13 @@
         <div>
             <label for="buscar" > <font color="#2069b4"><B> BUSCAR USUARIO </B></font> </label>
             <br><br>
-            <from method="get" action="BuscarUsuario" name="datos">
+            <form method="get" action="BuscarUsuario" name="datos">
                 <label> Criterio de b&uacute;squeda </label>
                 <select name="criterio" class="round"> <option>NIF</option> 
                 <option>Nombre</option> <option>Apellidos</option> <option>Rol</option>
                 </select>
                 <input name="campo" type="text" class="round" >
-                <input type="submit">
+                <input type="submit" value="buscar" name="buscar">
             </form>
             
             <br><br>
@@ -73,12 +76,14 @@
   	<table border="1">
   		<tbody>
   		<tr>
-                        <td>DNI</td>
+                        <td>NIF</td>
 			<td>Nombre</td>
 			<td>Apellidos</td>
                         <td>Rol</td>
                         <td>Correo electr&oacute;nico</td>
-                        <td>&nbsp;</td>
+                        <td>Direccion</td>
+                        <td>Publicable</td>
+                        <td>Ayuntamiento</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
 		</tr>
@@ -108,9 +113,21 @@
 			<td> <%= user.getApellidos() %> </td>
                         <td> <%= user.getRol() %> </td>
                         <td> <%= user.getCorreoE() %> </td>
-                        <td> <a href="ConsultarUsuario.jsp">Consultar</a> </td>
-                        <td> <a href="EditarUsuarioJsp.jsp">Editar</a> </td>
-                        <td> <a href="EditarUsuarioJsp.jsp">Eliminar</a> </td>
+                        <td> <%= user.getDireccion() %> </td>
+                        <%
+			if(user.getPublicable()) {
+                        %>
+                         <td><input type="checkbox" name="publicable" value="true" disabled checked></td>
+                        <%
+                        } else {
+                        %>
+                        <td><input type="checkbox" name="publicable" value="true" disabled></td>
+                        <%              
+                        }
+                        %>
+                        <td> <%= user.getAyuntamiento().getAyuntamientoPK().getLocalidad()%> </td>
+                        <td> <a href="OpcionesUsuarioServlet?do=edit&nif=<%=user.getNif() %>">Editar</a> </td>
+                        <td> <a href="OpcionesUsuarioServlet?do=delete&nif=<%=user.getNif()%>">Eliminar</a> </td>
 		</tr>
                 <%      }
                     }%>
@@ -118,7 +135,7 @@
   		</tbody>
   	</table>
   	<br>
-        <a href="AltaUsuario.jsp">A&ntilde;adir nuevo usuario</a>
+        <a href="CargarAltaUsuarioServlet">A&ntilde;adir nuevo usuario</a>
         
         </div>
   </body>

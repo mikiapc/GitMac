@@ -38,28 +38,42 @@
 	
 	</div> <!-- end top-bar -->
         <br><br>
-            Nombre 
+        <%
+            String nombre = (String)request.getAttribute("nombre");
+            String apellidos = (String)request.getAttribute("apellidos");
+            String nif = (String)request.getAttribute("nif");
+            String direccion = (String)request.getAttribute("direccion");
+            String email = (String)request.getAttribute("email");
+            String telefono = (String)request.getAttribute("telefono");
+            String publicable = (String)request.getAttribute("publicable");
+            String rol = (String)request.getAttribute("rol");
+            String ayuntamiento = (String)request.getAttribute("ayuntamiento");
+        %>
+            Nombre <%=nombre%>
             <br><br>
             
-            Dni 
+            Apellidos <%=apellidos%>
+            <br><br>
+            
+            Dni <%=nif%>
             <br><br>
            
-            Correo electr&oacute;nico 
+            Correo electr&oacute;nico <%=email%>
             <br><br>
             
-            Direcci&oacute;n 
+            Direcci&oacute;n <%=direccion%>
             <br><br>
             
-            Tel&eacute;fono de contacto 
+            Tel&eacute;fono de contacto <%=telefono%>
             <br><br>
                 
-            Publicable 
+            Publicable <%=publicable%>
             <br><br>
             
-            Rol 
+            Rol <%=rol%>
             <br><br>
             
-            Ayuntamiento
+            Ayuntamiento <%=ayuntamiento%>
             <br><br>
             
         <a href="EditarUsuarioJsp.jsp"><button>Editar</button></a>

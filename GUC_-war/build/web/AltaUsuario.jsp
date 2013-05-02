@@ -1,3 +1,6 @@
+<%@page import="app.entity.Usuario"%>
+<%@page import="java.util.List"%>
+<%@page import="app.entity.Ayuntamiento"%>
 <!--
 To change this template, choose Tools | Templates
 and open the template in the editor.
@@ -61,24 +64,48 @@ and open the template in the editor.
             <br><br>
                 
             <label for="publicable">publicable</label>
-            <input name="publicable" value="si" type="radio"> S&iacute;
+            <input name="publicable" value="si" type="radio" checked="true"> S&iacute;
             <input name="publicable" value="no" type="radio"> No
             <br><br>
             
             <label for="rol">rol</label>
-            <select name="rol">
+            <select name="rol" selected="">
                 <option> Administrador </option>
                 <option> Controlador diputaci&oacute;n</option>
                 <option> Controlador ayuntamiento </option>
                 <option> Jefe de servicio </option>
-                <option> Usuario </option>
+                <option selected="true"> Usuario </option>
             </select>
             <br><br>
             
             <label for="ayuntamiento">ayuntamiento</label>
-            <select name="ayuntamiento"><option>none</option></select>
+            <select name="ayuntamiento">
+            <% 
+                List<Ayuntamiento> ayuntamientos = (List<Ayuntamiento>)request.getAttribute("ayuntamientos");
+                for(Ayuntamiento a : ayuntamientos){            
+            %>
+          
+            <option><%=a.getAyuntamientoPK().getLocalidad() %></option>
+            <%
+                }
+            %>
+            </select>
+            <br><br>
+            
+            <label for="jefe">jefe de servicio</label>
+            <select name="jefe">
+            <% 
+                List<Usuario> jefes = (List<Usuario>)request.getAttribute("jefes");
+                for(Usuario j : jefes){            
+            %>   
+                <option><%= j.getNombre()+" "+j.getApellidos() %></option>
+            <%
+                }
+            %>
+            </select>
             <br><br>
             
         <input type="submit" class="button round blue">
+        </form>
     </body>
 </html>

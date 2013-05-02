@@ -37,14 +37,6 @@
         <br><br>
         <div>
             <form method="get" action="NuevaSolicitud" name="solicitud">
-                
-                <label for="destinatario">para</label>
-                <input type="text" name="destinatario" size="62">
-                <br><br>
-                
-                <label for="remitente">de</label>
-                <input type="text" name="remitente" size="62">
-                <br><br>
                                 
                 <label for="asunto">asunto</label>
                 <input type="text" name="asunto" size="62">

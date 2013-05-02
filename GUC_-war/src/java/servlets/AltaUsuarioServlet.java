@@ -2,11 +2,14 @@ package servlets;
 
 
 
+import app.dao.AyuntamientoFacadeLocal;
 import app.dao.UsuarioFacadeLocal;
 import app.dao.UsuarioFacade;
+import app.entity.Ayuntamiento;
 import app.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -34,7 +37,8 @@ public class AltaUsuarioServlet extends HttpServlet {
     
     @EJB 
     private UsuarioFacadeLocal user;
-    
+    @EJB 
+    private AyuntamientoFacadeLocal ayuntamientoFacade;
     
     
    
@@ -52,7 +56,7 @@ public class AltaUsuarioServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+        RequestDispatcher rd;
         HttpSession sesion = request.getSession();
         
         String nombre = request.getParameter("nombre");
@@ -63,33 +67,45 @@ public class AltaUsuarioServlet extends HttpServlet {
         String email = request.getParameter("email");
         String telefono = request.getParameter("telefono");
         String publicable = request.getParameter("publicable");
+        String ayuntamiento = request.getParameter("ayuntamiento");
+        String jefe = request.getParameter("jefe");
         
         boolean pub = true;
         if(publicable.equalsIgnoreCase("no")){
             pub = false;
         }
-        
+
         PasswordGenerator pwd = null; 
         String password = pwd.getPassword();
         
         
         Usuario usuario = new Usuario(nif, nombre, apellidos, direccion, telefono, email, pub, rol, password, false);
+        
+        List<Ayuntamiento> ayuntamientos = ayuntamientoFacade.findAll();
+        Ayuntamiento a = new Ayuntamiento("Málaga", "malaga");
+        for(Ayuntamiento ayu:ayuntamientos){
+            if(ayu.getAyuntamientoPK().getLocalidad().equalsIgnoreCase(ayuntamiento)){
+               a = new Ayuntamiento(ayu.getAyuntamientoPK().getLocalidad(),ayu.getAyuntamientoPK().getDireccion());
+            }
+        }
+        usuario.setAyuntamiento(a);
+        List<Usuario> jefes = user.findByRol("jefe de servicio");
+        Usuario j = null;
+        for(Usuario jef:jefes){
+            if((jef.getNombre()+jef.getApellidos()).equalsIgnoreCase(jefe)){
+                j = jef;
+            }
+        }
+        usuario.setJefeservicio(j);
         user.create(usuario);
-       
-        //em.persist(user);
+        
         
         
         EnviarEmail enviar = new EnviarEmail();
         enviar.enviar(email, nif, password);
-        
-        request.setAttribute("nif", nif);
-        request.setAttribute("nombre", nombre);
-        request.setAttribute("apellidos", apellidos);
-        request.setAttribute("rol", rol);
-        request.setAttribute("email", email);
+  
         
         
-        RequestDispatcher rd;
         rd = this.getServletContext().getRequestDispatcher("/GestionUsuariosServlet");
         
         rd.forward(request, response);

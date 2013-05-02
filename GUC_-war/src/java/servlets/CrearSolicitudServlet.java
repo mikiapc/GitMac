@@ -4,32 +4,28 @@
  */
 package servlets;
 
-import app.dao.UsuarioFacadeLocal;
-import app.entity.Usuario;
+import app.dao.SolicitudFacadeLocal;
+import app.entity.Solicitud;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.PrintWriter;
+import java.util.Date;
 import javax.ejb.EJB;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 
 /**
  *
- * @author 
+ * @author Naoual Amasri
  */
-@WebServlet(name="GestionUsuariosServlet", urlPatterns={"/GestionUsuariosServlet"})
-public class GestionUsuariosServlet extends HttpServlet {
+@WebServlet(name = "CrearSolicitudServlet", urlPatterns = {"/CrearSolicitudServlet"})
+public class CrearSolicitudServlet extends HttpServlet {
     
-
     @EJB
-    private UsuarioFacadeLocal usuarioFacade;
-
+    private SolicitudFacadeLocal solicitudFacade;
+            
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -40,22 +36,18 @@ public class GestionUsuariosServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        HttpSession session = request.getSession();
-        String action = (String)request.getParameter("action");
-	
-    
-        List<Usuario> listaUsuarios = usuarioFacade.findAll();
-        request.setAttribute("usuarios", listaUsuarios);
-       
+        String asunto = (String)request.getParameter("asunto");
+        String solicitud = (String)request.getParameter("solicitud");
+        Date fecha = new Date();
         
-        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/AdminPrincipal.jsp");
-        dispatcher.forward(request, response);
-            
+        String fechaHora = String.valueOf(fecha.getYear())+String.valueOf(fecha.getMonth())+
+                String.valueOf(fecha.getDay())+String.valueOf(fecha.getHours())+
+                String.valueOf(fecha.getMinutes())+String.valueOf(fecha.getSeconds());
+        //Solicitud soli = new Solicitud(0, fecha.getDate(), asunto, solicitud, "pendiente", false, false);
         
         
     }
@@ -100,6 +92,4 @@ public class GestionUsuariosServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-
 }

@@ -4,6 +4,9 @@
     Author     : Naoual Amasri
 --%>
 
+<%@page import="app.entity.Usuario"%>
+<%@page import="app.entity.Ayuntamiento"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -38,47 +41,128 @@
 	
 	</div> <!-- end top-bar -->
         <br><br>
-        <form method="get" action="AltaUsuario" name="datos">
-            Nombre <br>
-            <input name="nombre" type="text">
-            <input name ="apellido1" type="text">
-            <input name="apellido2" type="text">
+        <% Usuario usuario = (Usuario)request.getAttribute("usuario");
+        %>
+        <form method="get" action="/EditUsuarioServlet" name="edit">
+            <label for="nif">nif</label>
+            <input name="nif" type="text" value="<%=usuario.getNif()%>">
             <br><br>
             
-            Dni <br>
-            <input name="dni" type="text">
+            <label for="nombre">nombre</label>
+            <input name="nombre" type="text" value="<%=usuario.getNombre()%>">
+            <br><br>
+            
+            <label for="apellidos">apellidos</label>
+            <input name ="apellidos" type="text" value="<%=usuario.getApellidos()%>">
+            <br><br>
+            
+            <label for="contrasenya">contrase&ntilde;a</label>
+            <input name="contrasenya" type="text" value="<%=usuario.getPassword()%>">
             <br><br>
            
-            Correo electr&oacute;nico <br>
-            <input name="email" type="text">
+            <label for="email">correo electr&oacute;nico</label>
+            <input name="email" type="text"  value="<%=usuario.getCorreoE()%>">
             <br><br>
             
-            Direcci&oacute;n <br>
-            <input name="direccion" type="text">
+            <label for="direccion">direcci&oacute;n</label>
+            <input name="direccion" type="text" value="<%=usuario.getDireccion()%> " >
             <br><br>
             
-            Tel&eacute;fono de contacto <br>
-            <input name="telefono" type="text">
+            <label for="telefono">tel&eacute;fono</label>
+            <input name="telefono" type="text" value="<%=usuario.getTelefono()%>">
             <br><br>
                 
-            Publicable <br>
-            <input name="publicable" value="si" type="radio"> S&iacute;
-            <input name="publicable" value="no" type="radio"> No
+            <label for="publicable">publicable</label>
+            <% if(usuario.getPublicable()){%>
+                <input name="publicable" value="si" type="radio" checked="true"> S&iacute;
+                <input name="publicable" value="no" type="radio"> No
+             <%}else{%>
+                <input name="publicable" value="si" type="radio"> S&iacute;
+                <input name="publicable" value="no" type="radio" checked="true"> No
+             <%}%>
             <br><br>
             
-            Rol <br>
-            <select name="rol">
-                <option> Administrador </option>
-                <option> Controlador </option>
-                <option> Jefe de servicio </option>
-                <option> Usuario </option>
+            <label for="rol">rol</label>
+            <% if(usuario.getRol().equalsIgnoreCase("administrador")){%>
+                <select name="rol">
+                    <option selected="true"> Administrador </option>
+                    <option> Controlador diputaci&oacute;n</option>
+                    <option> Controlador ayuntamiento </option>
+                    <option> Jefe de servicio </option>
+                    <option> Usuario </option>
+                </select>
+             <%} else if (usuario.getRol().equalsIgnoreCase("Controlador Diputacion")){ %>
+             <select name="rol">
+                    <option> Administrador </option>
+                    <option selected="true"> Controlador diputaci&oacute;n</option>
+                    <option> Controlador ayuntamiento </option>
+                    <option> Jefe de servicio </option>
+                    <option> Usuario </option>
+                </select>
+             <% } else if(usuario.getRol().equalsIgnoreCase("Controlador ayuntamiento")){%>
+             <select name="rol">
+                    <option> Administrador </option>
+                    <option> Controlador diputaci&oacute;n</option>
+                    <option selected="true"> Controlador ayuntamiento </option>
+                    <option> Jefe de servicio </option>
+                    <option> Usuario </option>
+                </select>
+             <%} else if(usuario.getRol().equalsIgnoreCase("Jefe de servicio")){%>
+             <select name="rol">
+                    <option> Administrador </option>
+                    <option> Controlador diputaci&oacute;n</option>
+                    <option> Controlador ayuntamiento </option>
+                    <option selected="true"> Jefe de servicio </option>
+                    <option> Usuario </option>
+                </select>
+             <%}else{%>
+             <select name="rol">
+                    <option> Administrador </option>
+                    <option> Controlador diputaci&oacute;n</option>
+                    <option> Controlador ayuntamiento </option>
+                    <option> Jefe de servicio </option>
+                    <option selected="true"> Usuario </option>
+                </select>
+             <%}%>
+             
+            <br><br>
+            
+            <label for="ayuntamiento">ayuntamiento</label>
+            <select name="ayuntamiento">
+            <% 
+                List<Ayuntamiento> ayuntamientos = (List<Ayuntamiento>)request.getAttribute("ayuntamientos");
+                for(Ayuntamiento a : ayuntamientos){            
+                    if(usuario.getAyuntamiento().equals(a)){
+                        
+            %>
+                    <option selected="true"><%=a.getAyuntamientoPK().getLocalidad() %></option>
+                    <%}else{%>
+                    <option selected="false"><%=a.getAyuntamientoPK().getLocalidad() %></option>
+            <%
+                    }
+                }
+            %>
             </select>
             <br><br>
-            
-            Ayutamiento
-            <select name="ayuntamiento"><option>none</option></select>
-            <br><br>
-            
-        <button>Enviar</button></form>
+            <%--
+            <label for="jefe">jefe de servicio</label>
+            <select name="jefe">
+                <% List<Usuario> jefes = (List<Usuario>)request.getAttribute("jefes"); 
+                    for(Usuario j:jefes){   
+                        if(usuario.getJefeservicio().equals(j)){
+                %>
+                <option selected="true">j.getNombre()+j.getApellidos() </option>
+                <%
+                    }else{
+                %>
+                <option selected="flase">j.getNombre()+j.getApellidos() </option>
+                <%
+                        }
+                    }
+                %>
+            </select>
+            --%>
+            <input type="submit" class="button round blue">
+        </form>
     </body>
 </html>
